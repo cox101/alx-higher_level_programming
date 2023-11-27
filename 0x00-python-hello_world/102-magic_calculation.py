@@ -1,6 +1,10 @@
-#!/usr/bin/python3
+import dis
+
 def magic_calculation(a, b):
-    result = 98 ** a
-    result += b
+    result = a ** b
+    result += 98
     return result
+
+/*Compare bytecode*/
+dis.dis(magic_calculation)
 
