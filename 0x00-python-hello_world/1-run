@@ -1,4 +1,14 @@
 #!/bin/bash
-python3 - <<END
-print("Hello welcome, Let's Learn Python")
-END
+
+/*simple Shell script to run Python code stored in an environment variable*/
+/*Retrieve Python code from the environment variable*/
+python_code="$PYCODE"
+
+/*Check if the variable is set and not empty*/
+if [ -n "$python_code" ]; then
+    # Run Python code
+    echo "$python_code" | python3 -
+else
+    echo "Error: Environment variable \$PYCODE is not set or empty."
+fi
+
