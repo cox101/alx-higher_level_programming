@@ -1,0 +1,4 @@
+#!/bin/bash
+python3 - <<END
+print("Hello welcome, Let's Learn Python")
+END
