@@ -1,68 +1,62 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "lists.h"
-#include <stdio.h>
 
 /**
- * check_cycle - Checks if a singly-linked list contains a cycle.
- * @list: A singly-linked list.
- *
- * Return: If there is no cycle - 0.
- *         If there is a cycle - 1.
+ * print_listint - prints all elements of a listint_t list
+ * @h: pointer to head of list
+ * Return: number of nodes
  */
-/* Definition for singly-linked list. */
-struct listint_s {
-    int n;
-    struct listint_s *next;
-};
+size_t print_listint(const listint_t *h)
+{
+    const listint_t *current = h;
+    size_t n = 0; /* number of nodes */
 
-typedef struct listint_s listint_t;
+    while (current != NULL)
+    {
+        printf("%i\n", current->n);
+        current = current->next;
+        n++;
+    }
+
+    return n;
+}
 
 /**
- * check_cycle - Checks if a singly linked list has a cycle.
- * @list: Pointer to the head of the linked list.
- * Return: 1 if there is a cycle, 0 otherwise.
+ * add_nodeint - adds a new node at the beginning of a listint_t list
+ * @head: pointer to a pointer of the start of the list
+ * @n: integer to be included in node
+ * Return: address of the new element or NULL if it fails
  */
-int check_cycle(listint_t *list) {
-    listint_t *slow = list, *fast = list;
+listint_t *add_nodeint(listint_t **head, const int n)
+{
+    listint_t *new;
 
-    while (slow && fast && fast->next) {
-        slow = slow->next;        /* Move one step at a time */
-        fast = fast->next->next;  /* Move two steps at a time */
+    new = malloc(sizeof(listint_t));
+    if (new == NULL)
+        return NULL;
 
-        if (slow == fast) {
-            /* If there is a cycle, slow and fast will meet */
-            return 1;
-        }
-    }
+    new->n = n;
+    new->next = *head;
+    *head = new;
 
-    /* If we reach here, there is no cycle */
-    return 0;
+    return new;
 }
 
-/* Example usage */
-int main(void) {
-    listint_t *head, *node;
+/**
+ * free_listint - frees a listint_t list
+ * @head: pointer to list to be freed
+ * Return: void
+ */
+void free_listint(listint_t *head)
+{
+    listint_t *current;
 
-    /* Create a linked list with a cycle */
-    head = malloc(sizeof(listint_t));
-    head->n = 1;
-    head->next = NULL;
-
-    node = malloc(sizeof(listint_t));
-    node->n = 2;
-    node->next = head;
-    head->next = node;
-
-    /* Check if there is a cycle */
-    if (check_cycle(head)) {
-        printf("There is a cycle in the linked list.\n");
-    } else {
-        printf("There is no cycle in the linked list.\n");
+    while (head != NULL)
+    {
+        current = head;
+        head = head->next;
+        free(current);
     }
-
-    /* Free memory */
-    free(head);
-    free(node);
-
-    return 0;
 }
+
