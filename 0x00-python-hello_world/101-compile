@@ -1,22 +1,2 @@
 #!/bin/bash
-
-/* Check if PYFILE environment variable is set */
-if [ -z "$PYFILE" ]; then
-    echo "Error: PYFILE environment variable not set."
-    exit 1
-fi
-
-/* Get the filename and extension */
-filename=$(basename -- "$PYFILE")
-extension="${filename##*.}"
-filename="${filename%.*}"
-
-/* Compile the Python script */
-python3 -m py_compile "$PYFILE"
-
-/* Rename the output file to match the specified format */
-mv "__pycache__/$filename.cpython-*.pyc" "$filename.c"
-
-/* Remove the __pycache__ directory */
-rm -rf "__pycache__"
-
+python3 -m compileall -b $PYFILE
