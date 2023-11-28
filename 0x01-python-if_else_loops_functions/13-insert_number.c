@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "lists.h"
 
 typedef struct listint_s {
     int n;
