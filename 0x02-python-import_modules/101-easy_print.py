@@ -1,4 +1,4 @@
 #!/usr/bin/python3
-print(r"#pythoniscool\n")
+__import__('os').write(1, b"#pythoniscool\n")
 
 
