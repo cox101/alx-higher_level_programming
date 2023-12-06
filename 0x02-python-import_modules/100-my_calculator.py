@@ -2,12 +2,16 @@
 from calculator_1 import add, subtract, multiply, divide
 import sys
 
-def main():
+if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: ./program.py <a> <operator> <b>")
+        print("Usage: ./your_program.py <a> <operator> <b>")
         sys.exit(1)
 
-    a, operator, b = int(sys.argv[1]), sys.argv[2], int(sys.argv[3])
+    a = int(sys.argv[1])
+    operator = sys.argv[2]
+    b = int(sys.argv[3])
+
+    result = None
 
     if operator == '+':
         result = add(a, b)
@@ -18,10 +22,8 @@ def main():
     elif operator == '/':
         result = divide(a, b)
     else:
-        print("Unknown operator. Available operators: +, -, *, /")
+        print("Unknown operator. Available operators: +, -, * and /")
         sys.exit(1)
 
-    print(f"{a} {operator} {b} = {result}")
+    print("{:d} {:s} {:d} = {:d}".format(a, operator, b, result))
 
-if __name__ == "__main__":
-    main()
