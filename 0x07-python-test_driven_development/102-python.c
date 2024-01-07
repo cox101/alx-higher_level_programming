@@ -1,30 +1,31 @@
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
+#include "Python.h"
 
-void print_python_string(PyObject *p);
+/**
+ * print_python_string - Prints information about Python strings.
+ * @p: A PyObject string object.
+ */
+void print_python_string(PyObject *p)
+{
+    long int length;
 
-int main(int argc, char *argv[]) {
-    Py_Initialize();
-    PyObject *str = PyUnicode_DecodeUTF8("Hello, Python!", 13, "strict");
-    print_python_string(str);
-    Py_DECREF(str);
-    Py_Finalize();
-    return 0;
-}
+    fflush(stdout);
 
-void print_python_string(PyObject *p) {
-    // Check if the object is a valid string
-    if (!PyUnicode_Check(p)) {
-        fprintf(stderr, "Invalid String Object\n");
-        return;
+    printf("[.] string object info\n");
+    if (PyUnicode_Check(p))
+    {
+        length = ((PyASCIIObject *)(p))->length;
+
+        if (PyUnicode_IS_COMPACT_ASCII(p))
+            printf("  type: compact ascii\n");
+        else
+            printf("  type: compact unicode object\n");
+
+        printf("  length: %ld\n", length);
+        printf("  value: %ls\n", PyUnicode_AsWideCharString(p, &length));
     }
-
-    Py_ssize_t size;
-    const char *str = PyUnicode_AsUTF8AndSize(p, &size);
-
-    printf("  [.] string object info\n");
-    printf("    type: %s\n", Py_TYPE(p)->tp_name);
-    printf("    length: %zd\n", size);
-    printf("    value: %s\n", str);
+    else
+    {
+        printf("  [ERROR] Invalid String Object\n");
+    }
 }
 
