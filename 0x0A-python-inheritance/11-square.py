@@ -1,37 +1,33 @@
 #!/usr/bin/python3
 """Defines a Rectangle subclass Square."""
 
-class BaseGeometry:
-    def area(self):
-        raise Exception("area() is not implemented")
+BaseGeometry = __import__('7-base_geometry').BaseGeometry
+Rectangle = __import__('9-rectangle').Rectangle
 
-    def integer_validator(self, name, value):
-        if not isinstance(value, int):
-            raise TypeError(f"{name} must be an integer")
-        if value <= 0:
-            raise ValueError(f"{name} must be greater than 0")
-
-class Rectangle(BaseGeometry):
-    def __init__(self, width, height):
-        self.integer_validator("width", width)
-        self.integer_validator("height", height)
-        self.__width = width
-        self.__height = height
-
-    def area(self):
-        return self.__width * self.__height
-
-    def __str__(self):
-        return f"[Rectangle] {self.__width}/{self.__height}"
 
 class Square(Rectangle):
+    """Represents a square.
+    Private instance attribute size.
+    Public method area().
+    Inherits from Rectangle.
+    """
+
     def __init__(self, size):
+        """Initializes a Square.
+        Args:
+            - size: size of the square
+        """
+
         self.integer_validator("size", size)
         super().__init__(size, size)
+        self.__size = size
 
     def __str__(self):
-        return f"[Square] {self._Rectangle__width}/{self._Rectangle__height}"
+        return str("[Square] {}/{}".format(self.__size, self.__size))
 
-    def print(self):
-        print(self.__str__())
+    def area(self):
+        """Computes the area of a Square instance.
+        Overwrites the area() method from Rectangle.
+        """
 
+        return self.__size ** 2
