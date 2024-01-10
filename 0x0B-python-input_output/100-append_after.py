@@ -2,7 +2,7 @@
 """ function that inserts a line of text to a file"""
 
 def append_after(filename="", search_string="", new_string=""):
-    """
+    """Appends the new_string after
     the search_string in filename.
     Args:
         - filename: name of the file
@@ -10,15 +10,13 @@ def append_after(filename="", search_string="", new_string=""):
         - new_string: new_string to append
     """
 
-    try:
-        with open(filename, 'r') as file:
-            lines = file.readlines()
+    with open(filename, "r") as f:
+        text = f.readlines()
 
-        with open(filename, 'w') as file:
-            for line in lines:
-                file.write(line)
-                if search_string in line:
-                    file.write(new_string + '\n')
-
-    except Exception as e:
-        print(f"Error: {e}")
+    with open(filename, "w") as fo:
+        s = ""
+        for line in text:
+            s += line
+            if search_string in line:
+                s += new_string
+        fo.write(s)
