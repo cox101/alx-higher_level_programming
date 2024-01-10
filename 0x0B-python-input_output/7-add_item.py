@@ -1,39 +1,35 @@
-/usr/bin/python3
-"""Add all arguments to a Python list and save them to a file."""
+#!/usr/bin/python3
+"""
+Script that adds all arguments to a Python list and saves them to a file.
+"""
 
 import sys
-from os.path import exists
+import json
 
-def save_to_json_file(my_obj, filename):
-    """Saves an object to a JSON file.
-
-    Args:
-        my_obj: Python object to be saved.
-        filename (str): Name of the JSON file.
-    """
-    with open(filename, 'w') as file:
-        json.dump(my_obj, file)
-
-def load_from_json_file(filename):
-    """Creates an object from a JSON file.
-
-    Args:
-        filename (str): Name of the JSON file.
-
-    Returns:
-        object: Python object created from the JSON file.
-    """
-    with open(filename, 'r') as file:
-        return json.load(file)
+def save_to_json_file(my_list, filename):
+    with open(filename, mode='w', encoding='utf-8') as file:
+        json.dump(my_list, file)
 
 if __name__ == "__main__":
-    filename = "add_item.json"
+    """Check if at least one argument is provided"""
+    if len(sys.argv) < 2:
+        print("Usage: {} arg1 arg2 ...".format(sys.argv[0]))
+        sys.exit(1)
+     """Extract command-line arguments"""
+    arguments = sys.argv[1:]
 
-    if exists(filename):
-        my_list = load_from_json_file(filename)
-    else:
+    """ Load existing list or create a new one"""
+    try:
+        with open("add_item.json", mode='r', encoding='utf-8') as file:
+            my_list = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
         my_list = []
 
-    my_list.extend(sys.argv[1:])
-    save_to_json_file(my_list, filename)
+    """ Add arguments to the list"""
+    my_list.extend(arguments)
+
+    """Save the updated list to the file"""
+    save_to_json_file(my_list, "add_item.json")
+
+    print("Arguments added to add_item.json:", arguments)
 
