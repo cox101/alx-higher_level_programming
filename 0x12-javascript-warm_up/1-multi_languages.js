@@ -5,4 +5,3 @@ const p = 'Python is cool\n';
 const j = 'Javascript is amazing';
 
 console.log(`${c}${p}${j}`);
-
