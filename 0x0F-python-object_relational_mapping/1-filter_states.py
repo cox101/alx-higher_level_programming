@@ -1,40 +1,28 @@
 #!/usr/bin/python3
+"""
+Script that lists all `states` with a name starting
+with `N` from the database `hbtn_0e_0_usa`.
+
+Arguments:
+    mysql username (str)
+    mysql password (str)
+    database name (str)
+"""
 
 import sys
 import MySQLdb
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
-        sys.exit(1)
+    mySQL_username = sys.argv[1]
+    mySQL_password = sys.argv[2]
+    db_name = sys.argv[3]
 
-    username = sys.argv[1]
-    password = sys.argv[2]
-    database = sys.argv[3]
+    # By default, it will connect to localhost:3306
+    db = MySQLdb.connect(user=mySQL_username, passwd=mySQL_password, db=db_name)
+    cur = db.cursor()
 
-    try:
-        # Connect to MySQL server
-        db = MySQLdb.connect(host="localhost", port=3306, user=username, passwd=password, db=database)
+    cur.execute("uSELECT * FROM states WHERE name LIKE BINARY 'N%' ORDER BY id")
+    rows = cur.fetchall()
 
-        # Create cursor
-        cursor = db.cursor()
-
-        # Execute query
-        cursor.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
-
-        # Fetch all rows
-        rows = cursor.fetchall()
-
-        # Print results
-        for row in rows:
-            print(row)
-
-    except MySQLdb.Error as e:
-        print("MySQL Error {}: {}".format(e.args[0], e.args[1]))
-        sys.exit(1)
-
-    finally:
-        # Close connection
-        if db:
-            db.close()
-
+    for row in rows:
+        print(row)
