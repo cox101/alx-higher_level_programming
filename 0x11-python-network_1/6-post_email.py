@@ -1,12 +1,17 @@
 #!/usr/bin/python3
-import requests
+"""
+Sends a POST request to a given URL with a given email.
+Usage: ./6-post_email.py <URL> <email>
+  - Displays the body of the response.
+"""
 import sys
+import requests
 
 if __name__ == "__main__":
     url = sys.argv[1]
+    email = sys.argv[2]
+    payload = {"email": email}
 
-    response = requests.get(url)
-    if response.status_code >= 400:
-        print("Error code:", response.status_code)
-    else:
-        print(response.text)
+    response = requests.post(url, data=payload)
+    print(response.text)
+
