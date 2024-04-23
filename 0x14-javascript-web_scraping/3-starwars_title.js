@@ -1,19 +1,11 @@
 #!/usr/bin/node
-
 const request = require('request');
+const { argv } = require('process');
 
-const movieId = process.argv[2];
-const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
-
-request(apiUrl, (error, response, body) => {
+const BaseUrl = 'https://swapi-api.hbtn.io/api';
+request(BaseUrl + '/films/' + argv[2], (error, response, body) => {
   if (error) {
     console.error(error);
-    return;
   }
-  if (response.statusCode === 200) {
-    const movieData = JSON.parse(body);
-    console.log(movieData.title);
-  } else {
-    console.error(`Failed to fetch data from SWAPI: ${response.statusCode}`);
-  }
+  console.log(JSON.parse(body).title);
 });
