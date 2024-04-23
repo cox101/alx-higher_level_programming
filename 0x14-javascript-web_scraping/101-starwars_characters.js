@@ -1,36 +1,30 @@
 #!/usr/bin/node
-
 const request = require('request');
-const apiUrl = 'http://swapi.co/api/films/';
+const url = 'http://swapi.co/api/films/';
 let id = parseInt(process.argv[2], 10);
+let characters = [];
 
-request(apiUrl, (err, response, body) => {
-  if (!err && response.statusCode === 200) {
-    const films = JSON.parse(body).results;
-    
-    // Adjusting the id to fit within available film IDs (1 to 6)
+request(url, function (err, response, body) {
+  if (err == null) {
+    const resp = JSON.parse(body);
+    const results = resp.results;
     if (id < 4) {
       id += 3;
     } else {
       id -= 3;
     }
-
-    const film = films.find(film => film.episode_id === id);
-    if (film) {
-      const characters = film.characters;
-
-      characters.forEach(characterUrl => {
-        request(characterUrl, (err, response, body) => {
-          if (!err && response.statusCode === 200) {
-            console.log(JSON.parse(body).name);
-          }
-        });
-      });
-    } else {
-      console.error('Film not found.');
+    for (let i = 0; i < results.length; i++) {
+      if (results[i].episode_id === id) {
+        characters = results[i].characters;
+        break;
+      }
     }
-  } else {
-    console.error('Failed to fetch data from SWAPI:', err);
+    for (let j = 0; j < characters.length; j++) {
+      request(characters[j], function (err, response, body) {
+        if (err == null) {
+          console.log(JSON.parse(body).name);
+        }
+      });
+    }
   }
 });
-
